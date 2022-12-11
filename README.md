@@ -5,6 +5,12 @@ A stock trading bot utilizing TD Ameritrade's API to scan for positions, create 
 ## Go Version
     Go v1.19
 
+## Usage
+Start-Up using Make:
+```
+make run -f .\MakeFile
+```
+
 ## Environment Variables
 
 | Environment Variable Name | Description                    | Required |

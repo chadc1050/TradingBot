@@ -18,6 +18,7 @@ type Trader struct {
 func NewTrader() *Trader {
 	return &Trader{
 		client: client.NewClient(os.Getenv("ACCOUNT_ID"), os.Getenv("ACCOUNT_KEY")),
+		active: false,
 	}
 }
 
@@ -35,7 +36,6 @@ func (t *Trader) Stop() {
 
 func (t *Trader) process() {
 	// Function where all trading processes will be endlessly looped through
-
 	// Check if in trading hours
 	// Close positions
 	// Check if there is unallocated buying power
