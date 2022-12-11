@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Starting Trading Bot...")
+	fmt.Println("Starting Trading Bot Server...")
 
 	listenAddress := flag.String("listenAddress", ":8080", "Server Address")
 
