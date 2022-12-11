@@ -16,7 +16,7 @@ func main() {
 		"                               |___/                   \n")
 	fmt.Println("Starting Trading Bot Server...")
 
-	listenAddress := flag.String("listenAddress", ":8080", "Server Address")
+	listenAddress := flag.String("listenAddress", ":443", "Server Address")
 
 	flag.Parse()
 

@@ -9,8 +9,8 @@ import (
 )
 
 type Server struct {
-	listenAddress string
 	trader        *trader.Trader
+	listenAddress string
 }
 
 func NewServer(listenAddress string) *Server {
@@ -23,7 +23,11 @@ func NewServer(listenAddress string) *Server {
 func (s *Server) Start() error {
 	fmt.Println("Starting Server...")
 
-	http.HandleFunc("/healthCheck", s.handleHealthCheck)
+	http.HandleFunc("/health-check", s.handleHealthCheck)
+
+	http.HandleFunc("/tda/auth", s.handleTDAAuthCallback)
+	http.HandleFunc("/tda/is-logged-in", s.handleIsLoggedIn)
+	http.HandleFunc("/tda/log-in", s.handleLogIn)
 
 	http.HandleFunc("/bot/positions", s.handleGetOpenPositions)
 	http.HandleFunc("/bot/start", s.handleStartBot)
@@ -42,8 +46,6 @@ func (s *Server) handleStartBot(writer http.ResponseWriter, request *http.Reques
 	}
 
 	fmt.Println("Starting bot...")
-
-	s.trader.Start()
 }
 
 func (s *Server) handleStopBot(writer http.ResponseWriter, request *http.Request) {
@@ -88,6 +90,29 @@ func (s *Server) handleHealthCheck(writer http.ResponseWriter, request *http.Req
 	if err != nil {
 		panic("Error handling health check!")
 	}
+}
+
+func (s *Server) handleTDAAuthCallback(writer http.ResponseWriter, request *http.Request) {
+	s.requestLogging(request)
+
+	if request.Header.Get("Origin") != "https://auth.tdameritrade.com" {
+		fmt.Println("WARN: Origin of request was not TDA Auth!")
+	}
+
+	refreshToken := request.URL.Query().Get("code")
+
+	if len(refreshToken) == 0 {
+		fmt.Println("Refresh token not present in request!")
+	}
+
+}
+
+func (s *Server) handleIsLoggedIn(writer http.ResponseWriter, request *http.Request) {
+	// Will check if code in client is set to a value
+}
+
+func (s *Server) handleLogIn(writer http.ResponseWriter, request *http.Request) {
+	// Handles TDA OAuth and will set the code
 }
 
 func (s *Server) requestLogging(request *http.Request) {
