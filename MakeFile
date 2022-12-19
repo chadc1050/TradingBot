@@ -1,5 +1,5 @@
 build:
-	go build -o bin/tradingbot
+	go build -o bin/trading-bot
 
 run: build
-	./bin/tradingbot
+	./bin/trading-bot

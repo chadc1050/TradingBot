@@ -4,6 +4,7 @@ import (
 	"TradingBot/api"
 	"flag"
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -14,9 +15,16 @@ func main() {
 		"   | || | | (_| | (_| | | | | | (_| | | |_) | (_) | |_ \n" +
 		"   |_||_|  \\__,_|\\__,_|_|_| |_|\\__, | |____/ \\___/ \\__|\n" +
 		"                               |___/                   \n")
+
 	fmt.Println("Starting Trading Bot Server...")
 
-	listenAddress := flag.String("listenAddress", ":443", "Server Address")
+	fmt.Println("--------------------------------")
+	fmt.Println("TD Ameritrade Consumer Key: " + os.Getenv("TDA_CONSUMER_KEY"))
+	fmt.Println("TD Ameritrade Auth URL: " + os.Getenv("TDA_AUTH_URL"))
+	fmt.Println("TD Ameritrade Redirect URL: " + os.Getenv("TDA_REDIRECT_URL"))
+	fmt.Println("--------------------------------")
+
+	listenAddress := flag.String("listenAddress", ":8080", "Server Address")
 
 	flag.Parse()
 

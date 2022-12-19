@@ -1,37 +1,48 @@
 package trader
 
 import (
-	"github.com/chadc1050/TDAClient/client"
-	"os"
+	"TradingBot/auth"
+	"TradingBot/config"
+	"context"
+	"fmt"
+	"github.com/zricethezav/go-tdameritrade"
 )
 
-type Runnable interface {
-	Start()
-	Stop()
-}
-
 type Trader struct {
-	client *client.TDAClient
-	active bool
+	Authentication *auth.Authentication
+	BotConfig      *config.BotConfig
 }
 
-func NewTrader() *Trader {
+func NewTrader(config config.BotConfig) *Trader {
+
+	fmt.Println("Creating Trader...")
+
 	return &Trader{
-		client: client.NewClient(os.Getenv("ACCOUNT_ID"), os.Getenv("ACCOUNT_KEY")),
-		active: false,
+		Authentication: auth.NewAuthentication(),
 	}
+}
+
+func (t *Trader) GetAccountDetails(accountId string, positions bool, orders bool) (*tdameritrade.Account, error) {
+	client, err := t.Authentication.GetAuthenticatedClient()
+	if err != nil {
+		return nil, err
+	}
+
+	account, _, err := client.Account.GetAccount(context.Background(), accountId, &tdameritrade.AccountOptions{Position: positions, Orders: orders})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return account, nil
 }
 
 func (t *Trader) Start() {
-	if !t.active {
-
-	}
+	fmt.Println("Starting Bot...")
 }
 
 func (t *Trader) Stop() {
-	if t.active {
-
-	}
+	fmt.Println("Stopping Bot...")
 }
 
 func (t *Trader) process() {
